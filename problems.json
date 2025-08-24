@@ -1,0 +1,32 @@
+{
+    "laptop": [
+        "laptop not turning on fix",
+        "laptop repair manual",
+        "laptop troubleshooting tips"
+    ],
+    "printer": [
+        "printer not printing fix",
+        "printer repair manual",
+        "printer troubleshooting tips"
+    ],
+    "fridge": [
+        "fridge not cooling fix",
+        "fridge repair manual",
+        "fridge maintenance tips"
+    ],
+    "ac": [
+        "air conditioner not cooling fix",
+        "ac repair manual",
+        "ac maintenance tips"
+    ],
+    "washing machine": [
+        "washing machine not spinning fix",
+        "washing machine repair manual",
+        "washing machine maintenance tips"
+    ],
+    "router": [
+        "wifi router not connecting fix",
+        "router repair manual",
+        "router troubleshooting tips"
+    ]
+}

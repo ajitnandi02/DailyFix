@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DailyFix – Solve Everyday Problems Instantly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #f97316;
+            --accent: #10b981;
+            --light: #f8fafc;
+            --dark: #1e293b;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-bg::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(79, 70, 229, .35) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(249, 115, 22, .25) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-10px)
+            }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        .solution-card {
+            transition: all .3s ease;
+            background: linear-gradient(145deg, #fff, #f8fafc);
+            border: 1px solid rgba(226, 232, 240, .8);
+        }
+
+        .solution-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
+            border-color: var(--primary);
+        }
+
+        .upload-zone {
+            border: 2px dashed #d1d5db;
+            border-radius: 20px;
+            transition: all .25s ease;
+            background: linear-gradient(145deg, #f8fafc, #ffffff);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--primary);
+            background: linear-gradient(145deg, #e0e7ff, #c7d2fe);
+            transform: scale(1.02);
+        }
+
+        .image-preview {
+            max-width: 320px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 2px dashed #e5e7eb;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 1.2s ease;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen relative">
+    <!-- NAV -->
+    <nav class="bg-white/80 backdrop-blur sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="h-16 flex items-center justify-between">
+                <a class="text-2xl font-bold text-gradient flex items-center" href="#top"><i
+                        class="fa-solid fa-lightbulb mr-2"></i>DailyFix</a>
+                <div class="hidden md:flex items-center gap-6 text-sm">
+                    <a href="#how" class="text-gray-600 hover:text-indigo-600"><i
+                            class="fa-solid fa-info-circle mr-1"></i>How it works</a>
+                    <a href="#upload" class="text-gray-600 hover:text-indigo-600"><i
+                            class="fa-solid fa-upload mr-1"></i>Try it</a>
+                    <a href="#stories" class="text-gray-600 hover:text-indigo-600"><i
+                            class="fa-solid fa-star mr-1"></i>Stories</a>
+                </div>
+                <button id="ctaTry"
+                    class="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-indigo-700"><i
+                        class="fa-solid fa-rocket mr-1"></i>Try Free</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="gradient-bg text-white" id="top">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Solve Everyday Problems <span
+                    class="block text-indigo-200">in Seconds</span></h1>
+            <p class="mt-5 text-lg md:text-xl text-indigo-100 max-w-3xl mx-auto"><i
+                    class="fa-solid fa-magic mr-2"></i>Snap or describe the issue. We identify the problem and route you
+                to the best tutorials on YouTube and the web.</p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#upload"
+                    class="bg-white text-indigo-700 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 inline-flex items-center justify-center"><i
+                        class="fa-solid fa-camera mr-2"></i>Upload your problem</a>
+                <button id="watchDemo"
+                    class="border-2 border-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-indigo-700 inline-flex items-center justify-center"><i
+                        class="fa-solid fa-play mr-2"></i>Watch demo</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HOW -->
+    <section id="how" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">How it works</h2>
+                <p class="text-gray-600 mt-2">Three simple steps to fix common issues</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-indigo-100 rounded-full grid place-items-center mx-auto mb-4"><i
+                            class="fa-solid fa-camera-retro text-3xl text-indigo-600"></i></div>
+                    <h3 class="font-semibold">1. Snap or type</h3>
+                    <p class="text-gray-600">Upload a photo or describe the problem.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-indigo-100 rounded-full grid place-items-center mx-auto mb-4"><i
+                            class="fa-brands fa-searchengin text-3xl text-indigo-600"></i></div>
+                    <h3 class="font-semibold">2. Identify</h3>
+                    <p class="text-gray-600">We infer the issue with lightweight rules (MVP).</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-indigo-100 rounded-full grid place-items-center mx-auto mb-4"><i
+                            class="fa-solid fa-lightbulb text-3xl text-indigo-600"></i></div>
+                    <h3 class="font-semibold">3. Get solutions</h3>
+                    <p class="text-gray-600">Jump straight to curated videos and guides.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UPLOAD / ANALYZE -->
+    <section id="upload" class="py-16 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Try it yourself</h2>
+            <p class="text-gray-600 mb-8"><i class="fa-solid fa-keyboard mr-2"></i>Upload a picture or type your problem
+                to find solutions instantly</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Upload Section -->
+                <div class="upload-zone p-8" id="uploadZone">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-600 mb-4"></i>
+                    <p class="text-gray-600">Drag & drop or click to upload an image</p>
+                    <input type="file" id="fileInput" class="hidden" accept="image/*" />
+                    <img id="imagePreview" class="image-preview mt-4 hidden" />
+                    <div class="progress-bar mt-4" id="progressBar"></div>
+                    <button id="analyzeImgBtn"
+                        class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700"><i
+                            class="fa-solid fa-search mr-1"></i>Analyze Image</button>
+                </div>
+                <!-- Typing Section -->
+                <div class="upload-zone p-8">
+                    <i class="fa-solid fa-keyboard text-4xl text-indigo-600 mb-4"></i>
+                    <p class="text-gray-600">Or type your problem below</p>
+                    <textarea id="typedProblem" rows="5" class="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                        placeholder="Describe your problem..."></textarea>
+                    <button id="analyzeTextBtn"
+                        class="mt-4 bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700"><i
+                            class="fa-solid fa-search mr-1"></i>Analyze Text</button>
+                </div>
+            </div>
+            <div id="results" class="mt-10 grid md:grid-cols-3 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- STORIES -->
+    <section id="stories" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Success stories</h2>
+                <p class="text-gray-600"><i class="fa-solid fa-users mr-2"></i>Real fixes from simple tutorials.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="solution-card rounded-2xl p-6">
+                    <div class="flex items-center mb-3"><img class="w-12 h-12 rounded-full mr-3" alt=""
+                            src="https://cdn-icons-png.flaticon.com/512/2922/2922506.png" />
+                        <div>
+                            <p class="font-semibold">Sarah M.</p>
+                            <p class="text-sm text-gray-500">Coffee maker unclogged</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700"><i class="fa-solid fa-mug-hot mr-2 text-amber-600"></i>Saved ₹10,000 by
+                        cleaning the valve after a 5-minute video.</p>
+                </div>
+                <div class="solution-card rounded-2xl p-6">
+                    <div class="flex items-center mb-3"><img class="w-12 h-12 rounded-full mr-3" alt=""
+                            src="https://cdn-icons-png.flaticon.com/512/194/194938.png" />
+                        <div>
+                            <p class="font-semibold">Mike R.</p>
+                            <p class="text-sm text-gray-500">Bike chain fix</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700"><i class="fa-solid fa-bicycle mr-2 text-green-600"></i>Re-tensioned the
+                        chain following a step-by-step guide.</p>
+                </div>
+                <div class="solution-card rounded-2xl p-6">
+                    <div class="flex items-center mb-3"><img class="w-12 h-12 rounded-full mr-3" alt=""
+                            src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" />
+                        <div>
+                            <p class="font-semibold">Lisa T.</p>
+                            <p class="text-sm text-gray-500">Phone charging</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700"><i class="fa-solid fa-bolt mr-2 text-yellow-500"></i>Lint in the port! A
+                        quick clean solved it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONNECT -->
+    <section class="py-16 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-3">Connect with Ajit Nandi</h2>
+            <p class="text-indigo-100 mb-8">Follow for more projects and tips</p>
+            <div class="grid md:grid-cols-4 gap-6">
+                <a href="https://facebook.com/" target="_blank"
+                    class="glass rounded-2xl p-8 hover:scale-[1.02] transition"><i
+                        class="fab fa-facebook text-4xl text-blue-500"></i>
+                    <p class="mt-3 font-semibold">Facebook</p>
+                </a>
+                <a href="https://instagram.com/ajit__nandi__" target="_blank"
+                    class="glass rounded-2xl p-8 hover:scale-[1.02] transition"><i
+                        class="fab fa-instagram text-4xl text-pink-400"></i>
+                    <p class="mt-3 font-semibold">@ajit__nandi__</p>
+                </a>
+                <a href="https://youtube.com/" target="_blank"
+                    class="glass rounded-2xl p-8 hover:scale-[1.02] transition"><i
+                        class="fab fa-youtube text-4xl text-red-600"></i>
+                    <p class="mt-3 font-semibold">YouTube</p>
+                </a>
+                <a href="https://github.com/" target="_blank"
+                    class="glass rounded-2xl p-8 hover:scale-[1.02] transition"><i class="fab fa-github text-4xl"></i>
+                    <p class="mt-3 font-semibold">GitHub</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-300 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p><i class="fa-solid fa-code mr-2"></i>© 2025 DailyFix. Built by Ajit Nandi.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        // Default keyword bank
+        let keywordBank = {
+            "fan": ["fan not working fix", "fan manual", "fan maintenance tips"],
+            "bike": ["bike chain fix", "bike repair manual", "bike care tips"],
+            "phone": ["phone charging issue", "phone manual", "phone tips"],
+            "tv": ["tv not turning on fix", "tv repair manual", "tv care tips"]
+        };
+
+        // Load extra from problems.json
+        fetch("problems.json")
+            .then(res => res.json())
+            .then(data => { keywordBank = { ...keywordBank, ...data }; })
+            .catch(() => console.log("problems.json not found, using default only."));
+
+        // Show results
+        function showResults(text = "") {
+            const results = document.getElementById("results");
+            results.innerHTML = "";
+            let matched = [];
+            let lower = text.toLowerCase();
+
+            Object.keys(keywordBank).forEach(key => {
+                if (lower.includes(key)) matched.push(key);
+            });
+
+            if (matched.length === 0) {
+                results.innerHTML = `<p class="text-gray-600">No direct match found. Try different wording.</p>`;
+                return;
+            }
+
+            matched.forEach(keyword => {
+                const queries = keywordBank[keyword];
+                const solutions = [
+                    { icon: "fab fa-youtube text-red-600", title: "YouTube Guide", link: `https://www.youtube.com/results?search_query=${queries[0]}` },
+                    { icon: "fa-solid fa-file-lines text-indigo-600", title: "Step Docs", link: `https://www.google.com/search?q=${queries[1]}` },
+                    { icon: "fa-solid fa-lightbulb text-yellow-500", title: "Quick Tips", link: `https://www.google.com/search?q=${queries[2]}` }
+                ];
+
+                const wrapper = document.createElement("div");
+                wrapper.className = "solution-card p-6 rounded-2xl text-left mb-6";
+                wrapper.innerHTML = `<h2 class="font-bold text-lg mb-3"><i class="fa-solid fa-bug mr-2 text-indigo-600"></i> Problem: ${keyword}</h2>`;
+
+                solutions.forEach(s => {
+                    const card = document.createElement("div");
+                    card.className = "mb-3";
+                    card.innerHTML = `<i class="${s.icon} text-xl"></i> 
+                            <span class="ml-2 font-semibold">${s.title}</span><br>
+                            <a href="${s.link}" target="_blank" class="text-indigo-600 text-sm">View Resource →</a>`;
+                    wrapper.appendChild(card);
+                });
+
+                results.appendChild(wrapper);
+            });
+        }
+
+        // Buttons
+        document.getElementById("analyzeTextBtn").addEventListener("click", () => {
+            const text = document.getElementById("typedProblem").value;
+            if (!text) { alert("Please type a problem first!"); return; }
+            showResults(text);
+        });
+
+        document.getElementById("analyzeImgBtn").addEventListener("click", () => {
+            showResults("fan"); // demo
+        });
+    </script>
+</body>
+
+</html>
